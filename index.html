@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Royal Wedding of Reshma & Santhosh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Pinyon+Script&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0c0a07;
+        }
+
+        /* --- LUXURY BACKGROUND CANVASES --- */
+        .luxury-card-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: radial-gradient(circle at 50% 35%, #231b11 0%, #110e0a 65%, #050403 100%);
+            box-shadow: inset 0 0 160px rgba(0,0,0,0.95);
+            z-index: 1;
+        }
+        .luxury-card-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 85%, rgba(212,175,55,0.12) 0%, transparent 75%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* --- TRUE 3D ENVELOPE INTERACTION SYSTEM --- */
+        #envelope-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0f0c08;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1500px;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        
+        .envelope-container {
+            position: relative;
+            width: 90%;
+            max-width: 360px;
+            height: 520px;
+            background: #fdfbf7;
+            background: linear-gradient(135deg, #fdfbf7 0%, #f4eee1 100%);
+            border-radius: 6px;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        /* Lower Pocket Pocket Cover */
+        .envelope-pocket {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 60%;
+            background: linear-gradient(0deg, #f1e7d2 0%, #fbf9f3 100%);
+            border-top: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 0 0 6px 6px;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 40px;
+        }
+
+        /* 3D Top Flap Geometry */
+        .envelope-flap {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 50%;
+            background: linear-gradient(180deg, #ffffff 0%, #ecdcb9 100%);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            z-index: 5;
+            transform-origin: top;
+            transform: rotateX(0deg);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 4px 5px rgba(0,0,0,0.1));
+        }
+
+        .envelope-header {
+            position: absolute;
+            top: 60px;
+            width: 100%;
+            text-align: center;
+            z-index: 2;
+        }
+        .envelope-header h4 {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            letter-spacing: 4px;
+            color: #bc962c;
+            text-transform: uppercase;
+        }
+        .envelope-header p {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 34px;
+            color: #383024;
+            margin-top: 15px;
+        }
+
+        /* Premium Wax Seal Button */
+        .wax-seal-button {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 85px;
+            height: 85px;
+            background: radial-gradient(circle at 35% 35%, #ffeaa7 0%, #d4af37 45%, #aa8314 85%, #664d04 100%);
+            border-radius: 50%;
+            z-index: 10;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 -4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #b89324;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+            animation: pulseSeal 2s infinite;
+        }
+        .wax-seal-inner-text {
+            width: 65px;
+            height: 65px;
+            border: 1px double rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .envelope-footer {
+            font-family: 'Cinzel', serif;
+            font-size: 9px;
+            letter-spacing: 3px;
+            color: #8c7f6b;
+            font-weight: 600;
+        }
+
+        /* --- ANIMATION TRIGGER STATES --- */
+        .envelope-container.open-flap .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 2; /* Move behind card once opened */
+        }
+        .envelope-container.open-flap .wax-seal-button {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .envelope-container.exit-envelope {
+            transform: translateY(100vh) scale(0.9);
+            opacity: 0;
+        }
+
+        /* --- SLIDE DECK SYSTEM --- */
+        .slide-deck {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 65px 25px 45px 25px;
+            text-align: center;
+            z-index: 2;
+            transition: transform 1s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.8s ease;
+            transform: translateY(100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .slide-deck.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .slide-deck.past {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .slide-deck .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease;
+        }
+        .slide-deck.active .reveal-element {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- THE PERFECT OVAL FRAME --- */
+        .royal-oval-frame {
+            position: relative;
+            width: 210px;
+            height: 290px;
+            border: 2px solid #ebd084;
+            border-radius: 105px / 145px;
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 25px 55px rgba(0,0,0,0.6);
+            overflow: hidden;
+            margin: 10px auto;
+        }
+        .oval-inner-holder {
+            width: 100%;
+            height: 100%;
+            border-radius: 97px / 137px;
+            overflow: hidden;
+            background: #19140e;
+        }
+        .oval-inner-holder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* TYPOGRAPHY BUILD */
+        h1 { font-family: 'Pinyon Script', cursive; font-size: 52px; color: #fde49e; font-weight: 400; text-shadow: 0 3px 6px rgba(0,0,0,0.6); }
+        h2 { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: #ebd084; }
+        h3 { font-family: 'Cinzel', serif; font-size: 22px; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+        p { font-size: 13px; line-height: 1.8; color: #eae1cc; }
+        .gold-highlight-text { font-family: 'Cinzel', serif; color: #ebd084; font-size: 13px; letter-spacing: 2px; font-weight: 600; }
+        .luxury-swipe-hint { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 3px; color: rgba(235,208,132,0.7); animation: hintFloat 2s infinite; text-transform: uppercase; }
+        .gold-line-divider { height: 1px; width: 50px; background: linear-gradient(90deg, transparent, #ebd084, transparent); margin: 20px auto; }
+
+        @keyframes pulseSeal {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.04); box-shadow: 0 14px 30px rgba(212,175,55,0.3); }
+        }
+        @keyframes hintFloat {
+            0%, 100% { transform: translateY(0); opacity: 0.4; }
+            50% { transform: translateY(-6px); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="invitationMusic" loop>
+        <source src="bg-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- INTERACTIVE ENVELOPE -->
+    <div id="envelope-overlay">
+        <div class="envelope-container" id="envelopeContainer">
+            <div class="envelope-flap"></div>
+            
+            <div class="envelope-header">
+                <h4>The Wedding Invitation</h4>
+                <p>Santhosh & Reshma</p>
+            </div>
+            
+            <div class="wax-seal-button" onclick="openEnvelopeFlow()">
+                <div class="wax-seal-inner-text">R & S</div>
+            </div>
+            
+            <div class="envelope-pocket">
+                <div class="envelope-footer">TAP SEAL TO OPEN</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN SLIDER INTERFACE -->
+    <div class="luxury-card-wrapper" id="cardSliderCanvas">
+        
+        <!-- Slide 1 -->
+        <div class="slide-deck active">
+            <h2 class="reveal-element">The Wedding Celebration</h2>
+            <div class="royal-oval-frame reveal-element">
+                <div class="oval-inner-holder">
+                    <img src="photo1.jpg" alt="Reshma & Santhosh" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600'">
+                </div>
+            </div>
+            <div class="reveal-element">
+                <h1>Reshma & Santhosh</h1>
+                <p class="gold-highlight-text" style="margin-top: 4px;">January 16, 2027</p>
+            </div>
+            <div class="luxury-swipe-hint">Swipe Up to Enter ➔</div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide-deck">
+            <h2>The Groom</h2>
+            <div style="margin: auto 0;" class="reveal-element">
+                <p style="font-style: italic; color: #dfd7c2; margin-bottom: 10px;">Introducing the Groom</p>
+                <h3>Santhosh Thomas</h3>
+                <div class="gold-line-divider"></div>
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #ccc1a9;">Beloved Son Of</p>
+                <p class="gold-highlight-text" style="font-size: 15px; margin-top: 6px;">Mr. Thomas & Mrs. Philomena</p>
+            </div>
+            <div class="luxury-swipe-hint">Swipe Up ➔</div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide-deck">
+            <h2>The Bride</h2>
+            <div style="margin: auto 0;" class="reveal-element">
+                <p style="font-style: italic; color: #dfd7c2; margin-bottom: 10px;">Introducing the Bride</p>
+                <h3>Reshma Francis</h3>
+                <div class="gold-line-divider"></div>
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #ccc1a9;">Beloved Daughter Of</p>
+                <p class="gold-highlight-text" style="font-size: 15px; margin-top: 6px;">Mr. Francis James & Mrs. Sibil Francis</p>
+            </div>
+            <div class="luxury-swipe-hint">Swipe Up ➔</div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide-deck">
+            <h2>The Holy Matrimony</h2>
+            <div style="margin: auto 0; padding: 0 10px;" class="reveal-element">
+                <p style="font-style: italic; max-width: 280px; margin: 0 auto 25px auto; color: #eee6d3;">
+                    "In His beautiful timing, two lives become one eternal journey."
+                </p>
+                <p style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #ccc1a9;">The Date & Time</p>
+                <p class="gold-highlight-text" style="font-size: 16px; margin-bottom: 25px;">Saturday, 16 January 2027<br><span style="font-size: 13px; font-weight: normal; color: #ffffff; text-transform: none;">at 4:00 PM</span></p>
+                
+                <p style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #ccc1a9;">The Sacred Venue</p>
+                <p class="gold-highlight-text" style="font-size: 18px;">Kurooppada Church</p>
+                <p style="font-size: 13px; color: #ffffff; margin-top: 2px;">Kottayam, Kerala</p>
+            </div>
+            <div class="luxury-swipe-hint">Swipe Up ➔</div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="slide-deck">
+            <h2>With Warm Regards</h2>
+            <div style="margin: auto 0;" class="reveal-element">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #ccc1a9;">Cordially Welcomed By</p>
+                <h1 style="font-size: 44px; margin-top: 6px; color: #fde49e;">Roshna Francis</h1>
+                <p style="font-size: 11px; letter-spacing: 2px; color: #dfd7c2;">& The Family</p>
+                <div class="gold-line-divider" style="margin: 25px auto;"></div>
+                <p style="font-size: 13px; font-style: italic; max-width: 260px; margin: 0 auto; color: #eee6d3;">
+                    "We eagerly await your esteemed presence and prayers as we cross this magical threshold together."
+                </p>
+            </div>
+            <h2 style="font-size: 10px; letter-spacing: 3px;">Thank You</h2>
+        </div>
+
+    </div>
+
+    <script>
+        let slideIndexActive = 0;
+        const totalSlidesArray = document.querySelectorAll('.slide-deck');
+        const slideArrayLength = totalSlidesArray.length;
+        let swipeTrackerStartY = 0;
+
+        function openEnvelopeFlow() {
+            const envelope = document.getElementById('envelopeContainer');
+            
+            // Step 1: Flap മുകളിലേക്ക് 3D-യിൽ മറിയുന്നു
+            envelope.classList.add('open-flap');
+            
+            // Step 2: കവർ താഴേക്ക് നീങ്ങി അപ്രത്യക്ഷമാകുന്നു
+            setTimeout(() => {
+                envelope.classList.add('exit-envelope');
+                
+                // Step 3: ബാക്ക്ഗ്രൗണ്ട് ഓവർലേ പൂർണ്ണമായി മാറുന്നു
+                setTimeout(() => {
+                    const overlay = document.getElementById('envelope-overlay');
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                    }, 800);
+                }, 600);
+            }, 1000);
+            
+            // മ്യൂസിക് പ്ലേ ചെയ്യാൻ
+            const audio = document.getElementById('invitationMusic');
+            audio.play().catch(ex => console.log("Audio contextual note: ", ex));
+        }
+
+        // Swipe Gesture Core
+        const canvas = document.getElementById('cardSliderCanvas');
+        canvas.addEventListener('touchstart', (e) => { swipeTrackerStartY = e.touches[0].clientY; }, false);
+        canvas.addEventListener('touchend', (e) => {
+            let swipeTrackerEndY = e.changedTouches[0].clientY;
+            let deltaY = swipeTrackerStartY - swipeTrackerEndY;
+
+            if (Math.abs(deltaY) > 50) {
+                if (deltaY > 0 && slideIndexActive < slideArrayLength - 1) {
+                    totalSlidesArray[slideIndexActive].classList.remove('active');
+                    totalSlidesArray[slideIndexActive].classList.add('past');
+                    slideIndexActive++;
+                    totalSlidesArray[slideIndexActive].classList.add('active');
+                } else if (deltaY < 0 && slideIndexActive > 0) {
+                    totalSlidesArray[slideIndexActive].classList.remove('active');
+                    slideIndexActive--;
+                    totalSlidesArray[slideIndexActive].classList.remove('past');
+                    totalSlidesArray[slideIndexActive].classList.add('active');
+                }
+            }
+        }, false);
+    </script>
+</body>
+</html>
