@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Magical Wedding of Reshma & Santhosh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Pinyon+Script&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0a0603;
+            color: #f5eedc;
+        }
+
+        /* Magical Background Sparkles */
+        .sparkle-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(30, 20, 10, 0.8) 0%, #0a0603 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* 1. LUXURY ENVELOPE / LETTERPAD OPENING ANIMATION */
+        #envelope-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0a0603;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s cubic-bezier(0.77, 0, 0.175, 1);
+            padding: 20px;
+        }
+        .letterpad {
+            width: 100%;
+            max-width: 360px;
+            height: 550px;
+            background: linear-gradient(135deg, #16110b 0%, #261f14 100%);
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8), inset 0 0 30px rgba(212,175,55,0.2);
+            padding: 40px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            transform: scale(1);
+            transition: transform 0.8s ease;
+        }
+        .gold-seal {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #f3e5ab 0%, #d4af37 60%, #aa7c11 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            color: #0a0603;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(212,175,55,0.6);
+            cursor: pointer;
+            animation: pulseGlow 2s infinite;
+        }
+
+        /* Main Container */
+        .slider-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Luxury Slides */
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 60px 30px;
+            text-align: center;
+            background: transparent;
+            transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s;
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        .slide.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .slide.previous {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        /* Golden Borders & Frames matching the user's uploaded theme */
+        .luxury-frame {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            height: 380px;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            background: rgba(15, 10, 6, 0.6);
+            backdrop-filter: blur(5px);
+            padding: 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+        .luxury-frame::before {
+            content: '';
+            position: absolute;
+            top: 5px; left: 5px; right: 5px; bottom: 5px;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            pointer-events: none;
+        }
+        .main-photo-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .main-photo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: sepia(15%) brightness(95%);
+        }
+
+        /* Glowing Candle/Light Effect Overlay */
+        .magical-glow {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 40%;
+            background: linear-gradient(to top, rgba(212,175,55,0.25) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        /* Premium Typography */
+        h1 {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 58px;
+            color: #f3e5ab;
+            font-weight: 400;
+            text-shadow: 0 0 10px rgba(243,229,171,0.3);
+            margin: 5px 0;
+        }
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #d4af37;
+        }
+        h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            letter-spacing: 2px;
+            color: #ffffff;
+            margin-top: 10px;
+        }
+        p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #dfd5c6;
+            font-weight: 300;
+        }
+        .gold-text {
+            color: #d4af37;
+            font-family: 'Cinzel', serif;
+            font-size: 15px;
+            letter-spacing: 2px;
+        }
+
+        /* Navigation Arrow hint */
+        .swipe-hint {
+            font-family: 'Cinzel', serif;
+            font-size: 9px;
+            letter-spacing: 3px;
+            color: rgba(212,175,55,0.6);
+            animation: bounceSwipe 2s infinite;
+            text-transform: uppercase;
+            margin-top: 15px;
+        }
+
+        /* Animations */
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 15px rgba(212,175,55,0.5); transform: scale(1); }
+            50% { box-shadow: 0 0 30px rgba(212,175,55,0.8); transform: scale(1.04); }
+            100% { box-shadow: 0 0 15px rgba(212,175,55,0.5); transform: scale(1); }
+        }
+        @keyframes bounceSwipe {
+            0%, 100% { transform: translateY(0); opacity: 0.4; }
+            50% { transform: translateY(-5px); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sparkle-bg"></div>
+
+    <audio id="magicalMusic" loop>
+        <source src="bg-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="envelope-overlay">
+        <div class="letterpad" id="cardLetter">
+            <div style="border-bottom: 1px solid rgba(212,175,55,0.3); width: 60px; padding-top: 20px;"></div>
+            <div>
+                <p style="font-family: 'Cinzel', serif; letter-spacing: 4px; font-size: 11px; color: #d4af37;">YOU ARE CORDIALLY INVITED</p>
+                <p style="font-size: 12px; margin-top: 10px; font-style: italic; opacity: 0.7;">The Wedding of Santhosh & Reshma</p>
+            </div>
+            <div class="gold-seal" onclick="unveilInvitation()">R & S</div>
+            <p style="font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px; color: #a69279;">TAP SEAL TO UNVEIL</p>
+            <div style="border-top: 1px solid rgba(212,175,55,0.3); width: 60px; padding-bottom: 20px;"></div>
+        </div>
+    </div>
+
+    <div class="slider-container" id="mainSlider">
+        
+        <div class="slide active">
+            <h2>The Wedding Celebration</h2>
+            <div class="luxury-frame">
+                <div class="main-photo-wrapper">
+                    <img src="photo1.jpg" alt="Reshma & Santhosh" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600'">
+                    <div class="magical-glow"></div>
+                </div>
+            </div>
+            <div>
+                <h1>Reshma & Santhosh</h1>
+                <p class="gold-text" style="margin-top: 5px;">January 16, 2027</p>
+            </div>
+            <div class="swipe-hint">Swipe up to step inside ➔</div>
+        </div>
+
+        <div class="slide">
+            <h2>The Groom</h2>
+            <div style="margin: auto 0;">
+                <p style="font-style: italic; opacity: 0.6; margin-bottom: 10px;">Introducing the Groom</p>
+                <h3>Santhosh Thomas</h3>
+                <div style="height: 1px; width: 40px; background: #d4af37; margin: 20px auto;"></div>
+                <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #a69279;">Beloved Son Of</p>
+                <p class="gold-text" style="font-size: 16px; margin-top: 5px;">Mr. Thomas & Mrs. Philomena</p>
+            </div>
+            <div class="swipe-hint">Swipe up ➔</div>
+        </div>
+
+        <div class="slide">
+            <h2>The Bride</h2>
+            <div style="margin: auto 0;">
+                <p style="font-style: italic; opacity: 0.6; margin-bottom: 10px;">Introducing the Bride</p>
+                <h3>Reshma Francis</h3>
+                <div style="height: 1px; width: 40px; background: #d4af37; margin: 20px auto;"></div>
+                <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: #a69279;">Beloved Daughter Of</p>
+                <p class="gold-text" style="font-size: 16px; margin-top: 5px;">Mr. Francis James & Mrs. Sibil Francis</p>
+            </div>
+            <div class="swipe-hint">Swipe up ➔</div>
+        </div>
+
+        <div class="slide">
+            <h2>The Holy Matrimony</h2>
+            <div style="margin: auto 0; padding: 0 10px;">
+                <p style="font-style: italic; max-width: 280px; margin: 0 auto 25px auto;">"In His beautiful timing, two lives become one eternal journey."</p>
+                
+                <p style="font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #a69279;">The Date & Time</p>
+                <p class="gold-text" style="font-size: 18px; font-weight: bold; margin-bottom: 25px;">Saturday, 16 January 2027<br><span style="font-size: 14px; font-weight: normal; color: #fff;">at 4:00 PM</span></p>
+                
+                <p style="font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #a69279;">The Sacred Venue</p>
+                <p class="gold-text" style="font-size: 18px; font-weight: bold;">Kurooppada Church</p>
+                <p style="font-size: 14px; color: #fff;">Kottayam, Kerala</p>
+            </div>
+            <div class="swipe-hint">Swipe up ➔</div>
+        </div>
+
+        <div class="slide">
+            <h2>With Warm Regards</h2>
+            <div style="margin: auto 0;">
+                <p style="font-size: 13px; font-style: italic; max-width: 260px; margin: 0 auto; opacity: 0.8;">
+                    "We await your presence and prayers as we cross this magical threshold together."
+                </p>
+                <div style="height: 1px; width: 30px; background: rgba(212,175,55,0.3); margin: 30px auto;"></div>
+                <p style="font-size: 11px; text-transform: uppercase; letter-spacing: 3px; color: #a69279;">Cordially Welcomed By</p>
+                <h1 style="font-size: 45px; margin-top: 10px;">Roshna Francis</h1>
+                <p style="font-size: 11px; letter-spacing: 2px; opacity: 0.6;">& The Family</p>
+            </div>
+            <h2 style="font-size: 11px; color: #d4af37;">Thank You</h2>
+        </div>
+
+    </div>
+
+    <script>
+        let activeIndex = 0;
+        const allSlides = document.querySelectorAll('.slide');
+        const maxSlides = allSlides.length;
+        let touchOriginY = 0;
+
+        function unveilInvitation() {
+            // Letterpad opening animation trigger
+            document.getElementById('cardLetter').style.transform = 'scale(0.9) translateY(-30px)';
+            setTimeout(() => {
+                document.getElementById('envelope-overlay').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('envelope-overlay').style.display = 'none';
+                }, 1000);
+            }, 400);
+            
+            // Audio initialization
+            const music = document.getElementById('magicalMusic');
+            music.play().catch(e => console.log("Audio play gesture catch: ", e));
+        }
+
+        // Swipe Gesture Core Engine for Mobile Devices
+        const targetView = document.getElementById('mainSlider');
+        targetView.addEventListener('touchstart', (e) => { touchOriginY = e.touches[0].clientY; }, false);
+        targetView.addEventListener('touchend', (e) => {
+            let touchEndY = e.changedTouches[0].clientY;
+            let distanceY = touchOriginY - touchEndY;
+
+            if (Math.abs(distanceY) > 40) {
+                if (distanceY > 0 && activeIndex < maxSlides - 1) {
+                    // Upward Movement -> Forward Slide
+                    allSlides[activeIndex].classList.remove('active');
+                    allSlides[activeIndex].classList.add('previous');
+                    activeIndex++;
+                    allSlides[activeIndex].classList.add('active');
+                } else if (distanceY < 0 && activeIndex > 0) {
+                    // Downward Movement -> Backward Slide
+                    allSlides[activeIndex].classList.remove('active');
+                    activeIndex--;
+                    allSlides[activeIndex].classList.remove('previous');
+                    allSlides[activeIndex].classList.add('active');
+                }
+            }
+        }, false);
+    </script>
+</body>
+</html>
