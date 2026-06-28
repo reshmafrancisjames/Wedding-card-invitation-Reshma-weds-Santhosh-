@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Royal Wedding of Reshma & Santhosh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Pinyon+Script&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body, html { width: 100%; height: 100%; overflow: hidden; font-family: 'Montserrat', sans-serif; background-color: #0c0a07; }
+
+        /* --- 1. 3D LUXURY ENVELOPE OPENING EFFECT --- */
+        #envelope-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #110e0a; z-index: 9999; display: flex; justify-content: center; align-items: center;
+            perspective: 1500px; transition: opacity 1s ease;
+        }
+        .envelope {
+            position: relative; width: 90%; max-width: 380px; height: 520px;
+            background: #fdfaf2; border-radius: 8px; box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+            transform-style: preserve-3d; transition: transform 1.5s cubic-bezier(0.7, 0, 0.3, 1);
+            border: 1px solid rgba(212,175,55,0.2);
+        }
+        /* Top Flap of Envelope */
+        .envelope-flap {
+            position: absolute; top: 0; left: 0; width: 100%; height: 50%;
+            background: linear-gradient(180deg, #fdfbf7 0%, #ede6d0 100%);
+            clip-path: polygon(0 0, 100% 0, 50% 100%); z-index: 3;
+            transform-origin: top; transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1);
+            border-bottom: 1.5px solid rgba(197, 160, 89, 0.3);
+        }
+        /* 3D Wax Seal Monogram MONOGRAM monn */
+        .wax-seal {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 95px; height: 95px; background: radial-gradient(circle at 35% 35%, #fde49e 0%, #d4af37 50%, #6e5207 100%);
+            border-radius: 50%; border: 2.5px solid #fff; z-index: 10; cursor: pointer;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 15px rgba(0,0,0,0.3);
+            display: flex; justify-content: center; align-items: center;
+            font-family: 'Cinzel', serif; color: white; font-size: 24px; font-weight: 700;
+            animation: pulse 2.5s infinite; transition: all 0.5s ease;
+        }
+        .envelope.open .envelope-flap { transform: rotateX(180deg); z-index: 1; }
+        .envelope.open { transform: translateY(120%) rotateX(-10deg); opacity: 0; pointer-events: none; }
+
+        /* --- 2. MAIN CONTENT (Palace Stairs & Rose Aesthetic) --- */
+        .main-bg {
+            width: 100%; height: 100%; position: relative;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('https://i.ibb.co/VvYf0gW/palace-wedding-theme.jpg');
+            background-size: cover; background-position: center;
+            box-shadow: inset 0 0 100px #000;
+        }
+        /* Page Transition Layout */
+        .slider { width: 100%; height: 100%; position: relative; }
+        .slide {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+            display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+            padding: 60px 25px; text-align: center; opacity: 0; transform: translateY(100%);
+            transition: transform 1.1s cubic-bezier(0.7, 0, 0.3, 1), opacity 1s ease;
+        }
+        .slide.active { opacity: 1; transform: translateY(0); }
+        .slide.prev { transform: translateY(-100%); opacity: 0; }
+
+        /* --- 3. ROYAL OVAL FRAME FOR COUPLE --- */
+        .oval-frame {
+            position: relative; width: 230px; height: 320px;
+            border: 3px solid #ebd084; border-radius: 115px / 160px; /* Perfect Oval */
+            padding: 8px; background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px); box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 20px rgba(235,208,132,0.3);
+            overflow: hidden; margin: 10px auto;
+        }
+        .oval-frame img { width: 100%; height: 100%; object-fit: cover; border-radius: 105px / 150px; }
+
+        /* Typography */
+        h1 { font-family: 'Pinyon Script', cursive; font-size: 58px; color: #fcebbb; margin: 10px 0; text-shadow: 0 2px 5px #000; }
+        h2 { font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 5px; color: #ebd084; text-transform: uppercase; }
+        h3 { font-family: 'Cinzel', serif; font-size: 24px; color: #fff; margin: 15px 0; }
+        p { color: #eee4d0; font-size: 13.5px; line-height: 1.8; text-shadow: 0 1px 2px #000; }
+        .gold-txt { color: #ebd084; font-weight: 600; letter-spacing: 3px; font-size: 14px; text-transform: uppercase; }
+        .swipe-hint { font-family: 'Cinzel', serif; font-size: 10px; color: #ebd084; letter-spacing: 3px; animation: bounce 2s infinite; text-transform: uppercase; }
+
+        .divider { height: 1px; width: 50px; background: linear-gradient(90deg, transparent, #ebd084, transparent); margin: 20px auto; }
+
+        @keyframes pulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.05); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    </style>
+</head>
+<body>
+
+    <audio id="weddingSong" loop><source src="bg-music.mp3" type="audio/mpeg"></audio>
+
+    <div id="envelope-overlay">
+        <div class="envelope" id="env">
+            <div class="envelope-flap"></div>
+            <div style="padding-top: 50px; z-index: 2; position: relative;">
+                <h2 style="font-size: 11px;">The Wedding Invitation</h2>
+                <p style="font-family: 'Pinyon Script'; font-size: 38px; color: #3d3326; margin-top: 20px; text-shadow:none;">Santhosh & Reshma</p>
+            </div>
+            <div class="wax-seal" onclick="openMagic()">R & S</div>
+            <p style="z-index: 2; position: relative; bottom: -250px; color: #8c7e6b; font-size: 10px; letter-spacing: 2px;">TAP SEAL TO OPEN</p>
+        </div>
+    </div>
+
+    <div class="main-bg">
+        <div class="slider" id="slider">
+            
+            <div class="slide active">
+                <h2>The Wedding Celebration</h2>
+                <div class="oval-frame">
+                    <img src="photo1.jpg" alt="Reshma & Santhosh" onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=600'">
+                </div>
+                <h1>Reshma & Santhosh</h1>
+                <p class="gold-txt">January 16, 2027</p>
+                <div class="swipe-hint">Swipe Up ➔</div>
+            </div>
+
+            <div class="slide">
+                <h2>The Groom</h2>
+                <div style="margin: auto 0;">
+                    <p style="font-style: italic; color: #dfd7c2;">Introducing the Groom</p>
+                    <h3>Santhosh Thomas</h3>
+                    <div class="divider"></div>
+                    <p style="text-transform: uppercase; letter-spacing: 3px; font-size: 11px;">Beloved Son Of</p>
+                    <p class="gold-txt" style="font-size: 16px;">Mr. Thomas & Mrs. Philomena</p>
+                </div>
+                <div class="swipe-hint">Swipe Up ➔</div>
+            </div>
+
+            <div class="slide">
+                <h2>The Bride</h2>
+                <div style="margin: auto 0;">
+                    <p style="font-style: italic; color: #dfd7c2;">Introducing the Bride</p>
+                    <h3>Reshma Francis</h3>
+                    <div class="divider"></div>
+                    <p style="text-transform: uppercase; letter-spacing: 3px; font-size: 11px;">Beloved Daughter Of</p>
+                    <p class="gold-txt" style="font-size: 16px;">Mr. Francis James & Mrs. Sibil Francis</p>
+                </div>
+                <div class="swipe-hint">Swipe Up ➔</div>
+            </div>
+
+            <div class="slide">
+                <h2>The Holy Matrimony</h2>
+                <div style="margin: auto 0;">
+                    <p style="font-style: italic; max-width: 280px; margin: 0 auto 30px auto;">"In His beautiful timing, two lives become one eternal journey."</p>
+                    <p class="gold-txt">Saturday, 16 January 2027</p>
+                    <p style="font-size: 18px; margin: 10px 0;">at 4:00 PM</p>
+                    <div class="divider"></div>
+                    <p class="gold-txt">Sacred Venue</p>
+                    <p style="font-size: 20px; font-family: 'Cinzel';">Kurooppada Church</p>
+                    <p>Kottayam, Kerala</p>
+                </div>
+                <div class="swipe-hint">Swipe Up ➔</div>
+            </div>
+
+            <div class="slide">
+                <h2>With Warm Regards</h2>
+                <div style="margin: auto 0;">
+                    <p style="font-size: 11px; text-transform: uppercase; letter-spacing: 3px;">Cordially Welcomed By</p>
+                    <h1 style="font-size: 48px; color: #fcebbb;">Roshna Francis</h1>
+                    <p style="letter-spacing: 2px;">& The Family</p>
+                    <div class="divider" style="margin: 35px auto;"></div>
+                    <p style="font-style: italic; max-width: 250px; margin: 0 auto;">"We eagerly await your esteemed presence and prayers."</p>
+                </div>
+                <h2 style="font-size: 11px;">Thank You</h2>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        let touchStartY = 0;
+
+        function openMagic() {
+            const env = document.getElementById('env');
+            env.classList.add('open');
+            setTimeout(() => {
+                document.getElementById('envelope-overlay').style.opacity = '0';
+                setTimeout(() => { document.getElementById('envelope-overlay').style.display = 'none'; }, 1000);
+            }, 700);
+            document.getElementById('weddingSong').play().catch(e => console.log("Audio play deferred"));
+        }
+
+        const slider = document.getElementById('slider');
+        slider.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; });
+        slider.addEventListener('touchend', (e) => {
+            let touchEndY = e.changedTouches[0].clientY;
+            let diff = touchStartY - touchEndY;
+            if (Math.abs(diff) > 55) {
+                if (diff > 0 && currentSlide < slides.length - 1) {
+                    slides[currentSlide].classList.remove('active');
+                    slides[currentSlide].classList.add('prev');
+                    currentSlide++;
+                    slides[currentSlide].classList.add('active');
+                } else if (diff < 0 && currentSlide > 0) {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide--;
+                    slides[currentSlide].classList.remove('prev');
+                    slides[currentSlide].classList.add('active');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
