@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Wedding of Reshma & Santhosh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #faf6f0;
+            color: #332c22;
+        }
+        /* Western Luxury Invitation Overlay */
+        #overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #faf6f0;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease-in-out;
+            padding: 20px;
+            border: 15px solid #fff;
+        }
+        .overlay-card {
+            border: 1px solid #e5d5c5;
+            padding: 50px 30px;
+            background: #ffffff;
+            box-shadow: 0 15px 35px rgba(180,160,140,0.1);
+            border-radius: 4px;
+            max-width: 350px;
+            width: 100%;
+            text-align: center;
+        }
+        .gold-monogram {
+            font-family: 'Cinzel', serif;
+            font-size: 32px;
+            color: #bfa38a;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+        .open-btn {
+            background: #332c22;
+            color: #ffffff;
+            border: none;
+            padding: 12px 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: all 0.3s;
+        }
+        /* Main Slider */
+        .container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px 30px;
+            text-align: center;
+            background: #ffffff;
+            border: 12px solid #faf6f0;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            transform: translateY(100%);
+            z-index: 1;
+        }
+        .slide.active {
+            transform: translateY(0);
+            z-index: 2;
+        }
+        .slide.previous {
+            transform: translateY(-100%);
+            z-index: 1;
+        }
+        /* Floral & Vignette Accents */
+        .vignette {
+            font-family: 'Alex Brush', cursive;
+            color: #bfa38a;
+            font-size: 38px;
+            margin: 10px 0;
+        }
+        /* Typography */
+        h1 {
+            font-family: 'Alex Brush', cursive;
+            font-size: 52px;
+            color: #bfa38a;
+            font-weight: 400;
+            margin: 10px 0;
+        }
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #332c22;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #665e53;
+            letter-spacing: 0.5px;
+        }
+        .parent-names {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            color: #332c22;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+        /* Photo Frame Western Style */
+        .photo-frame {
+            width: 200px;
+            height: 280px;
+            border: 1px solid #e5d5c5;
+            padding: 8px;
+            background: #ffffff;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            margin: 20px auto;
+        }
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* Swipe Indicator */
+        .scroll-indicator {
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #bfa38a;
+            animation: fadeBlink 2s infinite;
+            text-transform: uppercase;
+        }
+        @keyframes fadeBlink {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(5px); }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="weddingMusic" loop>
+        <source src="bg-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="overlay">
+        <div class="overlay-card">
+            <div class="gold-monogram">R & S</div>
+            <p style="letter-spacing: 3px; font-size: 11px; text-transform: uppercase;">The Wedding Invitation</p>
+            <button class="open-btn" onclick="openInvitation()">View Invitation</button>
+        </div>
+    </div>
+
+    <div class="container" id="mainContainer">
+        
+        <div class="slide active" id="page1">
+            <h2>The Wedding of</h2>
+            <div class="photo-frame">
+                <img src="photo1.jpg" alt="Reshma & Santhosh" onerror="this.src='https://via.placeholder.com/200x280?text=Reshma+%26+Santhosh'">
+            </div>
+            <div>
+                <h1>Reshma & Santhosh</h1>
+                <p style="letter-spacing: 3px; font-size: 12px; margin-top: 5px; font-family: 'Cinzel', serif;">January 16, 2027</p>
+            </div>
+            <div class="scroll-indicator">Swipe up to reveal ➔</div>
+        </div>
+
+        <div class="slide" id="page2">
+            <div class="vignette">t</div>
+            <div>
+                <h2>The Groom</h2>
+                <h1>Santhosh Thomas</h1>
+                <p style="margin-top: 20px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Son of</p>
+                <p class="parent-names">Mr. Thomas & Mrs. Philomena</p>
+            </div>
+            <div class="vignette">b</div>
+            <div class="scroll-indicator">Swipe up ➔</div>
+        </div>
+
+        <div class="slide" id="page3">
+            <div class="vignette">t</div>
+            <div>
+                <h2>The Bride</h2>
+                <h1>Reshma Francis</h1>
+                <p style="margin-top: 20px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Daughter of</p>
+                <p class="parent-names">Mr. Francis James & Mrs. Sibil Francis</p>
+            </div>
+            <div class="vignette">b</div>
+            <div class="scroll-indicator">Swipe up ➔</div>
+        </div>
+
+        <div class="slide" id="page4">
+            <h2>The Holy Matrimony</h2>
+            <div>
+                <p style="font-style: italic; margin-bottom: 20px;">Together with our families, we invite you to celebrate our marriage</p>
+                <h2 style="color: #bfa38a; font-size: 18px;">Saturday, 16 January 2027</h2>
+                <p style="font-family: 'Cinzel', serif; font-size: 13px; margin-top: 5px;">at 4:00 in the afternoon</p>
+                
+                <p style="margin-top: 35px; text-transform: uppercase; font-size: 11px; letter-spacing: 2px;">Venue</p>
+                <p class="parent-names" style="font-size: 16px; color: #bfa38a;">Kurooppada Church</p>
+                <p style="font-size: 13px;">Kottayam, Kerala</p>
+            </div>
+            <div class="scroll-indicator">Swipe up ➔</div>
+        </div>
+
+        <div class="slide" id="page5">
+            <div class="vignette">v</div>
+            <div>
+                <p style="font-size: 13px; font-style: italic; color: #887e70; max-width: 260px; margin: 0 auto;">
+                    "Two lives, two hearts, joined together in friendship, united forever in love."
+                </p>
+                <p style="margin-top: 40px; font-size: 11px; text-transform: uppercase; letter-spacing: 2px;">With Warm Regards</p>
+                <h1 style="font-size: 38px; margin-top: 5px;">Roshna Francis</h1>
+                <p style="font-size: 12px; letter-spacing: 1px;">& The Family</p>
+            </div>
+            <h2 style="font-size: 12px; color: #bfa38a;">Thank You</h2>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let startY = 0;
+
+        function openInvitation() {
+            document.getElementById('overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = 'none';
+            }, 800);
+            
+            // Audio Playback
+            const audio = document.getElementById('weddingMusic');
+            audio.play().catch(err => console.log("Audio blocked: ", err));
+        }
+
+        // Mobile Swipe Controls
+        const container = document.getElementById('mainContainer');
+        container.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, false);
+        container.addEventListener('touchend', (e) => {
+            let endY = e.changedTouches[0].clientY;
+            let diffY = startY - endY;
+
+            if (Math.abs(diffY) > 50) {
+                if (diffY > 0 && currentSlide < totalSlides - 1) {
+                    slides[currentSlide].classList.remove('active');
+                    slides[currentSlide].classList.add('previous');
+                    currentSlide++;
+                    slides[currentSlide].classList.add('active');
+                } else if (diffY < 0 && currentSlide > 0) {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide--;
+                    slides[currentSlide].classList.remove('previous');
+                    slides[currentSlide].classList.add('active');
+                }
+            }
+        }, false);
+    </script>
+</body>
+</html>
